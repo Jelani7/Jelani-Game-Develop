@@ -1,12 +1,63 @@
 [gd_scene format=3 uid="uid://ch4qdpamj7dpk"]
 
-[ext_resource type="Texture2D" uid="uid://cgocewrvj77in" path="res://icon.svg" id="1_3hls8"]
+[ext_resource type="Script" uid="uid://qgaypcipqvad" path="res://level_1.gd" id="1_ihfcg"]
 [ext_resource type="PackedScene" uid="uid://ch5wb7x7m10b3" path="res://ball.tscn" id="2_hbghi"]
+[ext_resource type="PackedScene" uid="uid://iomq6ftk46ev" path="res://player.tscn" id="2_hn12h"]
+[ext_resource type="PackedScene" uid="uid://ckrjxhxovv0af" path="res://computer.tscn" id="3_hn12h"]
+[ext_resource type="Texture2D" uid="uid://48x5kj3j6kl" path="res://Board.png" id="5_rka8t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hn12h"]
+size = Vector2(51, 697)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfcg"]
+size = Vector2(41, 720)
 
 [node name="Level 1" type="Node2D" unique_id=1773471861]
+script = ExtResource("1_ihfcg")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=831706688]
-texture = ExtResource("1_3hls8")
+[node name="Background" type="Sprite2D" parent="." unique_id=787742945]
+position = Vector2(418, 306)
+scale = Vector2(1.587282, 1.7780219)
+texture = ExtResource("5_rka8t")
 
 [node name="Ball" parent="." unique_id=2022865583 instance=ExtResource("2_hbghi")]
-position = Vector2(579, 356)
+position = Vector2(407.00003, 206)
+scale = Vector2(0.3, 0.3)
+
+[node name="Player" parent="." unique_id=2010660965 instance=ExtResource("2_hn12h")]
+position = Vector2(659, 325)
+scale = Vector2(0.7, 0.7)
+
+[node name="Computer" parent="." unique_id=818937134 node_paths=PackedStringArray("ball") instance=ExtResource("3_hn12h")]
+position = Vector2(171, 372)
+scale = Vector2(0.7, 0.7)
+ball = NodePath("../Ball")
+
+[node name="ComputerGoal" type="Area2D" parent="." unique_id=1519831051]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ComputerGoal" unique_id=437342389]
+position = Vector2(793, 304)
+shape = SubResource("RectangleShape2D_hn12h")
+
+[node name="PlayerGoal" type="Area2D" parent="." unique_id=1051360560]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerGoal" unique_id=370914412]
+position = Vector2(1, 292)
+shape = SubResource("RectangleShape2D_ihfcg")
+
+[node name="ComputerScore" type="Label" parent="." unique_id=1919818721]
+offset_left = 28.0
+offset_top = 2.0
+offset_right = 358.0
+offset_bottom = 43.0
+text = "This is the Computer Score "
+
+[node name="PlayerScore" type="Label" parent="." unique_id=677597392]
+offset_left = 518.0
+offset_top = 1.0
+offset_right = 770.0
+offset_bottom = 35.0
+text = "This is the Player Score "
+
+[connection signal="computer_goal" from="Ball" to="." method="_on_ball_computer_goal"]
+[connection signal="player_goal" from="Ball" to="." method="_on_ball_player_goal"]
